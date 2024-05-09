@@ -8,7 +8,7 @@ const Body = () => {
     <BrowserRouter>
     <Routes>
         <Route exact path='/' element={<Login/>}/>
-        <Route exact path='/browse' element={<Browse/>}/>
+        <Route  path='/browse' element={<Browse/>}/>
     </Routes>
     </BrowserRouter>
     
