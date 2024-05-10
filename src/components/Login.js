@@ -1,11 +1,14 @@
 import React, { useRef, useState } from 'react'
 import Header from './Header'
 import { checkValidData } from '../utils/validate'
-import {  createUserWithEmailAndPassword, signInWithEmailAndPassword  } from "firebase/auth";
+import {  createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile  } from "firebase/auth";
 
 import { auth } from '../utils/firebase';
+import { useDispatch } from 'react-redux';
+import { addUser } from '../utils/userSlice';
 
 const Login = () => {
+    const dispatch=useDispatch()
     const [signIn, setSignIn] = useState(true)
     const [errMessage, setErrMessage] = useState(null)
     const toggleForm = () => {
@@ -14,9 +17,10 @@ const Login = () => {
     const name = useRef(null)
     const email = useRef(null)
     const password = useRef(null)
+    console.log('checking if name is present',name)
 
     const validateData = async() => {
-        const message = name ?  checkValidData(email.current.value, password.current.value) : checkValidData(email.current.value, password.current.value, name.current.val)
+        const message = name.current ?  checkValidData(email.current.value, password.current.value, name.current.value) : checkValidData(email.current.value, password.current.value)
         setErrMessage(message)
         //    console.log(message)
         // console.log(name.current.value)
@@ -30,6 +34,37 @@ const Login = () => {
                     console.log(userCredential)
                     const user = userCredential.user;
                     // ...
+
+
+
+
+
+
+
+                    
+
+updateProfile(user, {
+  displayName: name.current.value
+}).then(() => {
+  // Profile updated!
+  const {uid,displayName,email}=auth.currentUser
+  dispatch(addUser({uid,displayName,email}))
+  console.log('Profile updated')
+  // ...
+}).catch((error) => {
+  // An error occurred
+  console.log(error.message)
+  // ...
+});
+
+
+
+
+
+
+
+
+
                 })
                 .catch((error) => {
                     const errorCode = error.code;

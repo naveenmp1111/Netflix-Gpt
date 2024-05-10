@@ -32,7 +32,7 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-  },[])
+  },[navigate])
 
   return (
     
